@@ -1,9 +1,12 @@
+import Deliver from '@modules/delivers/infra/typeorm/entities/Deliver';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('users')
@@ -21,7 +24,7 @@ class User {
   password: string;
 
   @Column()
-  cpf: string;
+  cpf: number;
 
   @Column()
   deliveryman: boolean;
@@ -31,6 +34,12 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => Deliver, deliver => deliver.user, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn({ name: 'deliveryman_id' })
+  deliveries: Deliver[];
 }
 
 export default User;

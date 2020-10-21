@@ -8,7 +8,7 @@ interface TokenPayload {
   exp: number;
   sub: string;
 }
-export default function ensureAuthenticate(
+export default function midlewareAuthenticate(
   request: Request,
   response: Response,
   next: NextFunction,

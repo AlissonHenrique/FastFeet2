@@ -11,7 +11,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
-  cpf: string;
+  cpf: number;
   deliveryman: boolean;
 }
 
@@ -32,7 +32,7 @@ class CreateUserService {
     deliveryman,
   }: IRequest): Promise<User> {
     if (await this.userRepository.findByCPF(cpf)) {
-      throw new AppError('Email address already used.');
+      throw new AppError('CPF used.');
     }
 
     const hash_password = await this.hashProvider.generateHash(password);

@@ -10,10 +10,20 @@ class UserRepository implements IUserRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async findByCPF(cpf: string): Promise<User | undefined> {
+  public async findByCPF(cpf: number): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({
       where: { cpf },
     });
+    return user;
+  }
+
+  public async findById(id: string): Promise<User | undefined> {
+    const user = this.ormRepository.findOne(id);
+    return user;
+  }
+
+  public async findAllUser(): Promise<User[]> {
+    const user = this.ormRepository.find();
     return user;
   }
 
@@ -24,15 +34,23 @@ class UserRepository implements IUserRepository {
     cpf,
     deliveryman,
   }: ICreateUserDTO): Promise<User> {
-    const appointments = this.ormRepository.create({
+    const user = await this.ormRepository.create({
       name,
       email,
       password,
-      deliveryman,
       cpf,
+      deliveryman,
     });
-    await this.ormRepository.save(appointments);
-    return appointments;
+    await this.ormRepository.save(user);
+    return user;
+  }
+
+  public async update(data: ICreateUserDTO): Promise<User> {
+    return this.ormRepository.save(data);
+  }
+
+  public async delete(id: string): Promise<any> {
+    return this.ormRepository.delete(id);
   }
 
   public async save(user: User): Promise<User> {
